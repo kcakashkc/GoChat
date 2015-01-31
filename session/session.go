@@ -4,6 +4,7 @@ import (
 	"./uniuri"
 	"crypto/md5"
 	"encoding/hex"
+	"log"
 	"net/http"
 	"time"
 )
@@ -19,7 +20,7 @@ type SessionHandler struct {
 var shd = SessionHandler{
 	CookieName: "chat-msg",
 	CookiePath: "/",
-	httponly:   true,
+	httponly:   false,
 }
 
 var sessionDB map[string]*sessionData = make(map[string]*sessionData)
@@ -71,6 +72,7 @@ func (h *SessionHandler) SessionCreate(wr *http.ResponseWriter, req *http.Reques
 		cookie.Secure = false
 		http.SetCookie(*wr, &cookie)
 		sessionDB[cookie.Value] = &sessionData{"Username": username}
+		log.Printf("Session = %v", cookie.Value)
 		return sessionDB[cookie.Value]
 	}
 	if _, ok := sessionDB[cookie.Value]; ok {

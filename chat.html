@@ -3,9 +3,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Chat Engine</title>
-	<script type="text/javascript"
-       src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">
-     </script>
 <style type="text/css">
 body{
 	font-family: "Comic Sans MS", Helvetica, Arial, sans-serif;
@@ -72,14 +69,13 @@ border-radius: 5px;
 </style>
 </head>
 <body>
+	<script src="jquery.js"></script>
 	<div class="container">
 			<div class="logo">
-				<a href="http://www.techumber.com">
-					 
-				</a>
+				<a href="http://www.techumber.com"></a>
 			</div>
 		<div>Hello {{.Uname}}<br><input type="button" onclick="chat.setName('asd')" value="asd"><br><input type="button" onclick="chat.setName('qwe')" value="qwe"><br><input type="button" onclick="chat.setName('zxc')" value="zxc"></div>
-		<div class="chat"><a href="/logout"><input type="button" value="Logout"></a>
+		<div class="chat"><input type="button" onclick="chat.close()" value="Logout"><input type="button" onclick="chat.init()" value="Start">
 			<div id="chatZone" name="chatZone"></div>
 				<form method="post" action="/sendmsg" id="msg-form">
 					<input type="hidden" id="uname" name="uname" placeholder="Username" />
@@ -87,6 +83,11 @@ border-radius: 5px;
 					<input type="text" id="msg" name="msg" autofocus="true" placeholder="Type Your Message Here" />
 					<input type="submit" value="Send" />
 				</form>
+				<form action="/sendfile" id="fileForm" enctype="multipart/form-data" method="post">
+					<input type="file" name="file" onchange="chat.sendFile()" id="TheFile" style="width: 600px; height: 40px; background: gray;"><BR>
+					<div id="progressNumber"></div>
+				</from>
+				<canvas id="canvasImg" width="490" height="220"></canvas>
 			</div>
 	</div>
 	<script type="text/javascript" src="./chat.js"></script>
@@ -95,6 +96,7 @@ border-radius: 5px;
 		     event.preventDefault();
 		     chat.sendMsg();
 		});
+		setTimeout(function(){chat.init();},50);
 	</script>
 </body>
 </html>
